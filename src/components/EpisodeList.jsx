@@ -26,18 +26,6 @@ class EpisodeList extends Component {
   };
 
   returnEpisodes = (episode, i) => {
-    let Parser = require("rss-parser");
-    let parser = new Parser();
-    // var res = parser.parseString(episode.enclosure);
-
-    var myJson = JSON.stringify(episode.enclosure);
-    console.log(
-      episode.enclosure
-        ? episode.enclosure.url
-        : "json_data is null or undefined"
-    );
-    // if (myJson.length !== undefined) console.log(myJson.length);
-    //console.log(episode.enclosure);
     return (
       <Episode
         key={i}
