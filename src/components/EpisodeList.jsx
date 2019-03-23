@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Episode from "./Episode";
 import UserForm from "./UserForm";
 import logo from "../logo.svg";
+import AlertDialog from "./AlertDialog";
 
 class EpisodeList extends Component {
   state = {
@@ -12,7 +13,7 @@ class EpisodeList extends Component {
     program_description: null
   };
 
-  showInfo = () => {
+  renderEpisodes = () => {
     return (
       <div>
         <h1>
@@ -56,21 +57,39 @@ class EpisodeList extends Component {
     const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
 
     if (feed_url) {
-      (async () => {
-        let feed = await parser.parseURL(CORS_PROXY + feed_url);
+      var arr = [];
+      // parser.parseURL(CORS_PROXY + feed_url, function(err, feed) {
 
-        let arr = [];
-        feed.items.forEach(item => {
-          // console.log(item);
-          arr.push(item);
-        });
-        this.setState({
-          episodes: arr,
-          program_title: feed.title,
-          fetching: !this.state.fetching,
-          program_image: feed.image.url,
-          program_description: feed.description
-        });
+      //   feed.items.forEach(function(entry) {
+      //     arr.push(entry);
+      //   });
+      // });
+      // console.log(arr);
+      // this.setState({
+      //   episodes: arr,
+      //   program_title: "feed.title",
+      //   fetching: !this.state.fetching,
+      //   program_image: "feed.image.url",
+      //   program_description: "feed.description"
+      // });
+      (async () => {
+        try {
+          let feed = await parser.parseURL(CORS_PROXY + feed_url);
+          let arr = [];
+          console.log("feed: " + feed);
+          feed.items.forEach(item => {
+            arr.push(item);
+          });
+          this.setState({
+            episodes: arr,
+            program_title: feed.title,
+            fetching: !this.state.fetching,
+            program_image: feed.image.url,
+            program_description: feed.description
+          });
+        } catch (err) {
+          console.log(err);
+        }
       })();
     } else {
       return;
@@ -82,13 +101,16 @@ class EpisodeList extends Component {
       <div>
         <UserForm getFeed={this.getFeed} />
         {this.state.episodes ? (
-          this.showInfo()
+          this.renderEpisodes()
         ) : (
           <div>
             {!this.state.fetching ? (
               <p>Please enter an RSS feed</p>
             ) : (
-              <img src={logo} className="App-logo" />
+              <div>
+                <img src={logo} className="App-logo" />
+                {!this.state.error ? <AlertDialog /> : <div />}
+              </div>
             )}
           </div>
         )}

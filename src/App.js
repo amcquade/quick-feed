@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import "./App.css";
 import EpisodeList from "./components/EpisodeList";
 import Episode from "./components/Episode";
-import logo from "./logo.svg";
-import axios from "axios";
 
 //https://api.github.com/users/amcquade
 
