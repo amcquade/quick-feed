@@ -1,11 +1,6 @@
 import React, { Component } from "react";
 
 class Episode extends Component {
-  state = {
-    episodes: null,
-    avatar: null
-  };
-
   render() {
     return (
       <div>

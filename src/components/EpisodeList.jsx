@@ -1,26 +1,16 @@
 import React, { Component } from "react";
 import Episode from "./Episode";
-import UserForm from "./UserForm";
-import logo from "../logo.svg";
 
 class EpisodeList extends Component {
-  state = {
-    episodes: null,
-    program_image: null,
-    fetching: false,
-    program_title: null,
-    program_description: null
-  };
-
-  showInfo = () => {
+  renderEpisodeList = () => {
     return (
       <div>
         <h1>
-          {this.state.program_title} by {this.state.creator}
+          {this.props.program_title} by {this.props.creator}
         </h1>
-        <img src={this.state.program_image} />
-        <p>{this.state.program_description}</p>
-        {this.state.episodes.map(this.returnEpisodes)}
+        <img src={this.props.program_image} />
+        <p>{this.props.program_description}</p>
+        {this.props.episodes.map(this.returnEpisodes)}
       </div>
     );
   };
@@ -37,62 +27,15 @@ class EpisodeList extends Component {
             ? episode.enclosure.url
             : "json_data is null or undefined"
         }
-        image={this.state.program_image}
+        image={this.props.program_image}
         description={episode.description}
       />
     );
   };
 
-  getFeed = e => {
-    this.setState({ fetching: !this.state.fetching });
-    e.preventDefault();
-    const feed_url = e.target.elements.feed_url.value;
-    let Parser = require("rss-parser");
-    let parser = new Parser({
-      customFields: {
-        item: [["enclosure", { keepArray: true }]]
-      }
-    });
-    const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
-
-    if (feed_url) {
-      (async () => {
-        let feed = await parser.parseURL(CORS_PROXY + feed_url);
-
-        let arr = [];
-        feed.items.forEach(item => {
-          // console.log(item);
-          arr.push(item);
-        });
-        this.setState({
-          episodes: arr,
-          program_title: feed.title,
-          fetching: !this.state.fetching,
-          program_image: feed.image.url,
-          program_description: feed.description
-        });
-      })();
-    } else {
-      return;
-    }
-  };
-
   render() {
     return (
-      <div>
-        <UserForm getFeed={this.getFeed} />
-        {this.state.episodes ? (
-          this.showInfo()
-        ) : (
-          <div>
-            {!this.state.fetching ? (
-              <p>Please enter an RSS feed</p>
-            ) : (
-              <img src={logo} className="App-logo" />
-            )}
-          </div>
-        )}
-      </div>
+      <div>{this.props.episodes ? this.renderEpisodeList() : <div />}</div>
     );
   }
 }

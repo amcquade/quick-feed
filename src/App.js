@@ -1,70 +1,119 @@
 import React, { Component } from "react";
 import "./App.css";
 import EpisodeList from "./components/EpisodeList";
-import Episode from "./components/Episode";
+import UserForm from "./components/UserForm";
 import logo from "./logo.svg";
-import axios from "axios";
-
-//https://api.github.com/users/amcquade
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 class App extends Component {
   state = {
     episodes: null,
-    avatar: null
+    fetching: false,
+    program_title: null,
+    program_description: null,
+    program_image: null
   };
 
   getFeed = e => {
+    this.setState({ fetching: !this.state.fetching });
     e.preventDefault();
-    const user = e.target.elements.feed_url.value;
+    const feed_url = e.target.elements.feed_url.value;
     let Parser = require("rss-parser");
-    let parser = new Parser();
+    let parser = new Parser({
+      customFields: {
+        item: [["enclosure", { keepArray: true }]]
+      }
+    });
     const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
 
-    if (user) {
+    if (feed_url) {
       (async () => {
-        let feed = await parser.parseURL(
-          CORS_PROXY + "https://www.reddit.com/.rss"
-        );
-        console.log(feed.title);
-
-        feed.items.forEach(item => {
-          console.log(item.title + ":" + item.link);
-        });
+        try {
+          let feed = await parser.parseURL(CORS_PROXY + feed_url);
+          let arr = [];
+          console.log("feed: " + feed);
+          feed.items.forEach(item => {
+            arr.push(item);
+          });
+          this.setState({
+            episodes: arr,
+            program_title: feed.title,
+            fetching: !this.state.fetching,
+            program_image: feed.image.url,
+            program_description: feed.description,
+            error: false
+          });
+        } catch (err) {
+          console.log(err);
+          this.setState({ error: true, fetching: false });
+        }
       })();
-      // let feed = parser.parseURL("https://www.reddit.com/.rss");
-      // console.log(feed.title);
-
-      // feed.items.forEach(item => {
-      //   console.log(item.title + ":" + item.link);
-      // });
-      // axios.get(`https://api.github.com/users/${user}`).then(res => {
-      //   console.log(res);
-      //   const repos = res.data.public_repos;
-
-      //   // ui updates here
-      //   this.setState({
-      //     repos: res.data.public_repos,
-      //     avatar: res.data.avatar_url
-      //   });
-
-      //   // short hand of code above bc our const and state have the same name
-      //   // this.setState({ repos });
-      // });
     } else {
       return;
     }
   };
 
-  returnEpisodes = (episode, i) => {
-    return <Episode key={i} index={i} episode={episode} />;
+  handleClose = () => {
+    this.setState({
+      error: false,
+      fetching: false
+    });
   };
+
+  renderAlert = () => {
+    return (
+      <div>
+        <Dialog
+          open={this.state.error}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">Error Parsing Feed</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Please try retyping your RSS feed, or try a new one.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary" autoFocus>
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
+  };
+
   render() {
     return (
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">quick-feed</h1>
         </header>
-        <EpisodeList />
+        <UserForm
+          getFeed={this.getFeed}
+          onClick={() => this.setState({ fetching: true })}
+        />
+        {this.state.error ? this.renderAlert() : <div />}
+        {!this.state.fetching ? (
+          <p>Please enter an RSS feed</p>
+        ) : (
+          <div>
+            <img src={logo} className="App-logo" />
+          </div>
+        )}
+        <EpisodeList
+          episodes={this.state.episodes}
+          program_title={this.state.program_title}
+          program_description={this.state.program_description}
+          program_image={this.state.program_image}
+          fetching={this.props.fetching}
+        />
       </div>
     );
   }
