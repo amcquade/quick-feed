@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/quick-feed/build/index.html/precache-manifest.903c1569b62252d270219f7ebbd2e33b.js"
+  "/quick-feed/precache-manifest.05629aacdb4ccd5effb844375e4ead93.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/quick-feed/build/index.html/index.html", {
+workbox.routing.registerNavigationRoute("/quick-feed/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
