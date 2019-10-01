@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
+import '../App.css';
 
 class UserForm extends Component {
   constructor(props) {
@@ -32,7 +33,7 @@ class UserForm extends Component {
           name="feed_url"
           onChange={this.handleSearchChange}
         />
-        <Button type="submit" variant="contained" color="primary" disabled={this.state.enabled}>
+        <Button className="button-class" type="submit" variant="contained" color="primary" disabled={this.state.enabled}>
           Submit
         </Button>
       </form>

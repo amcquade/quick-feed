@@ -22,6 +22,10 @@
   color: white;
 }
 
+.button-class {
+  border-radius: 12px;
+}
+
 .App-link {
   color: #61dafb;
 }
