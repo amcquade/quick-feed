@@ -11,10 +11,10 @@ class UserForm extends Component {
       enabled: true,
     };
 
-    this.handleSearchChange = this.handleSearchChange.bind(this);
+    
   }
 
-  handleSearchChange(e) {
+  handleSearchChange = (e) => {
     const value = e.target.value;
 
     if (value != '') { 
@@ -28,7 +28,7 @@ class UserForm extends Component {
     return (
       <form onSubmit={this.props.getFeed}>
         <Input
-          style={{ margin: "20px auto", display: "block" }}
+          style={{margin: "20px auto", display: "flex" }}
           type="text"
           name="feed_url"
           onChange={this.handleSearchChange}
