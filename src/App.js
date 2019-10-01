@@ -103,7 +103,7 @@ class App extends Component {
         />
         {this.state.error ? this.renderAlert() : <div />}
         {!this.state.fetching ? (
-          <p>Please enter an RSS feed</p>
+          <p className="text">Please enter an RSS feed</p>
         ) : (
           <div>
             <img src={logo} className="App-logo" />
