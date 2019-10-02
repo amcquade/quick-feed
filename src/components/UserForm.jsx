@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 class UserForm extends Component {
   constructor(props) {
     super(props)
-    
+
     this.state = {
       enabled: true,
     };
@@ -16,12 +16,12 @@ class UserForm extends Component {
   handleSearchChange(e) {
     const value = e.target.value;
 
-    if (value != '') { 
-      this.setState({enabled : false});
+    if (value !== '') {
+      this.setState({ enabled: false });
     } else {
-      this.setState({enabled : true});
+      this.setState({ enabled: true });
     }
-  };  
+  };
 
   render() {
     return (
@@ -36,8 +36,8 @@ class UserForm extends Component {
           Submit
         </Button>
       </form>
-    );  
-};
+    );
+  };
 };
 
 export default UserForm;

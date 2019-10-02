@@ -8,7 +8,7 @@ class EpisodeList extends Component {
         <h1>
           {this.props.program_title} by {this.props.creator}
         </h1>
-        <img src={this.props.program_image} />
+        <img src={this.props.program_image} alt={this.props.program_image} />
         <p>{this.props.program_description}</p>
         {this.props.episodes.map(this.returnEpisodes)}
       </div>

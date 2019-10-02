@@ -105,10 +105,10 @@ class App extends Component {
         {!this.state.fetching ? (
           <p>Please enter an RSS feed</p>
         ) : (
-          <div>
-            <img src={logo} className="App-logo" />
-          </div>
-        )}
+            <div>
+              <img src={logo} className="App-logo" alt="Logo App" />
+            </div>
+          )}
         <EpisodeList
           episodes={this.state.episodes}
           program_title={this.state.program_title}
