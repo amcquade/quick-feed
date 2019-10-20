@@ -37,13 +37,9 @@ class App extends Component {
       (async () => {
         try {
           let feed = await parser.parseURL(CORS_PROXY + feed_url);
-          let arr = [];
-          console.log("feed: " + feed);
-          feed.items.forEach(item => {
-            arr.push(item);
-          });
+          console.log("feed: " + JSON.stringify(feed, null, 4));
           this.setState({
-            episodes: arr,
+            episodes: feed.items,
             program_title: feed.title,
             fetching: !this.state.fetching,
             program_image: feed.image.url,
@@ -106,7 +102,7 @@ class App extends Component {
           <p>Please enter an RSS feed</p>
         ) : (
           <div>
-            <img src={logo} className="App-logo" />
+            <img src={logo} className="App-logo" alt="App Logo" />
           </div>
         )}
         <EpisodeList

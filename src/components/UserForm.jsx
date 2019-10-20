@@ -16,7 +16,7 @@ class UserForm extends Component {
   handleSearchChange(e) {
     const value = e.target.value;
 
-    if (value != '') { 
+    if (value !== '') { 
       this.setState({enabled : false});
     } else {
       this.setState({enabled : true});
