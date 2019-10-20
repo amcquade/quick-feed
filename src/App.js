@@ -11,6 +11,7 @@ import {
   DialogContentText,
   DialogTitle
 } from "@material-ui/core";
+import SearchHistory from "./components/SearchHistory";
 
 class App extends Component {
   state = {
@@ -18,7 +19,22 @@ class App extends Component {
     fetching: false,
     program_title: null,
     program_description: null,
-    program_image: null
+    program_image: null,
+    previous_feeds: [],
+    past: false
+  };
+
+  renderHistoryList = () => {
+    console.log("renderhistorycalled");
+    return <ul>{this.state.previous_feeds.map(this.renderHistory)}</ul>;
+  };
+
+  renderHistory = (feed, i) => {
+    return (
+      <li index={i} key={i}>
+        {feed}
+      </li>
+    );
   };
 
   getFeed = e => {
@@ -37,13 +53,16 @@ class App extends Component {
       (async () => {
         try {
           let feed = await parser.parseURL(CORS_PROXY + feed_url);
-          console.log("feed: " + JSON.stringify(feed, null, 4));
+          // console.log("feed: " + JSON.stringify(feed, null, 4));
+          console.log(this.state.previous_feeds);
           this.setState({
             episodes: feed.items,
             program_title: feed.title,
             fetching: !this.state.fetching,
             program_image: feed.image.url,
             program_description: feed.description,
+            previous_feeds: [...this.state.previous_feeds, feed_url],
+            past: true,
             error: false
           });
         } catch (err) {
@@ -93,6 +112,11 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">quick-feed</h1>
         </header>
+        {this.state.past ? (
+          <SearchHistory history={this.state.previous_feeds} />
+        ) : (
+          <div></div>
+        )}
         <UserForm
           getFeed={this.getFeed}
           onClick={() => this.setState({ fetching: true })}
