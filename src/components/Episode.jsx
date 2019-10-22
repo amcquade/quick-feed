@@ -4,7 +4,7 @@ class Episode extends Component {
   divStyles = {
     width: "77vw",
     float: "right",
-    "margin-right": "1vw"
+    marginRight: "1vw"
   }
   render() {
     return (
