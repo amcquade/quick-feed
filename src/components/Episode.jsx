@@ -8,7 +8,7 @@ class Episode extends Component {
   }
   render() {
     return (
-      <div class="list-group" style={this.divStyles}>
+      <div className="list-group" style={this.divStyles}>
         <a href={this.props.link} className="list-group-item list-group-item-action text-left">{this.props.title}</a>
       </div>
     );
