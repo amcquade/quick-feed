@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import "./App.css";
 import EpisodeList from "./components/EpisodeList";
 import UserForm from "./components/UserForm";
@@ -12,7 +12,7 @@ import {
   DialogTitle
 } from "@material-ui/core";
 
-class App extends Component {
+class App extends PureComponent {
   state = {
     episodes: null,
     fetching: false,

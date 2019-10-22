@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 
-class UserForm extends Component {
+class UserForm extends PureComponent {
   constructor(props) {
     super(props)
     

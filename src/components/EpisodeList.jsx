@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import Episode from "./Episode";
 
-class EpisodeList extends Component {
+class EpisodeList extends PureComponent {
   cardStyle = {
     width: "20vw",
     float: "left"

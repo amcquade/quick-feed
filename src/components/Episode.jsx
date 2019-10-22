@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 
-class Episode extends Component {
+class Episode extends PureComponent {
   divStyles = {
     width: "77vw",
     float: "right",
