@@ -22,7 +22,7 @@ class App extends Component {
   };
 
   getFeed = e => {
-    this.setState({ fetching: !this.state.fetching });
+    this.setState(state => ({ ...state, fetching: !this.state.fetching }));
     e.preventDefault();
     const feed_url = e.target.elements.feed_url.value;
     let Parser = require("rss-parser");
@@ -38,14 +38,15 @@ class App extends Component {
         try {
           let feed = await parser.parseURL(CORS_PROXY + feed_url);
           console.log("feed: " + JSON.stringify(feed, null, 4));
-          this.setState({
+          this.setState(state => ({
+            ...state,
             episodes: feed.items,
             program_title: feed.title,
             fetching: !this.state.fetching,
             program_image: feed.image.url,
             program_description: feed.description,
             error: false
-          });
+          }));
         } catch (err) {
           console.log(err);
           this.setState({ error: true, fetching: false });
@@ -57,10 +58,11 @@ class App extends Component {
   };
 
   handleClose = () => {
-    this.setState({
+    this.setState(state => ({
+      ...state,
       error: false,
       fetching: false
-    });
+    }));
   };
 
   renderAlert = () => {
@@ -95,7 +97,7 @@ class App extends Component {
         </header>
         <UserForm
           getFeed={this.getFeed}
-          onClick={() => this.setState({ fetching: true })}
+          onClick={() => this.setState(state => ({ ...state, fetching: true }))}
         />
         {this.state.error ? this.renderAlert() : <div />}
         {!this.state.fetching ? (
