@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import "./App.css";
 import EpisodeList from "./components/EpisodeList";
 import UserForm from "./components/UserForm";
-import logo from "./logo.svg";
+import LoadingStatus from "./components/LoadingStatus";
+
 import {
   Button,
   Dialog,
@@ -98,13 +99,7 @@ class App extends Component {
           onClick={() => this.setState({ fetching: true })}
         />
         {this.state.error ? this.renderAlert() : <div />}
-        {!this.state.fetching ? (
-          <p>Please enter an RSS feed</p>
-        ) : (
-          <div>
-            <img src={logo} className="App-logo" alt="App Logo" />
-          </div>
-        )}
+        <LoadingStatus fetching={this.state.fetching} />
         <EpisodeList
           episodes={this.state.episodes}
           program_title={this.state.program_title}
