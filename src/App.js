@@ -3,7 +3,8 @@ import ReactDOM from "react-dom";
 import "./App.css";
 import EpisodeList from "./components/EpisodeList";
 import UserForm from "./components/UserForm";
-import logo from "./logo.svg";
+import LoadingStatus from "./components/LoadingStatus";
+
 import {
   Button,
   Dialog,
@@ -117,14 +118,9 @@ class App extends Component {
           previous_feeds={[...this.state.previous_feeds]}
         />
         {this.state.error ? this.renderAlert() : <div />}
-
         {!this.state.past ? <p>Please enter an RSS feed</p> : <div></div>}
+        <LoadingStatus fetching={this.state.fetching} />
 
-        {this.state.fetching ? (
-          <img src={logo} className="App-logo" alt="App Logo" />
-        ) : (
-          <div></div>
-        )}
         <EpisodeList
           episodes={this.state.episodes}
           program_title={this.state.program_title}
