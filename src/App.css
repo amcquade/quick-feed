@@ -6,6 +6,10 @@
   height: 40vmin;
 }
 
+.history {
+  color: #808080;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 70px;

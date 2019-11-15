@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import "./App.css";
 import EpisodeList from "./components/EpisodeList";
 import UserForm from "./components/UserForm";
@@ -25,7 +26,6 @@ class App extends Component {
   };
 
   renderHistoryList = () => {
-    console.log("renderhistorycalled");
     return <ul>{this.state.previous_feeds.map(this.renderHistory)}</ul>;
   };
 
@@ -53,8 +53,6 @@ class App extends Component {
       (async () => {
         try {
           let feed = await parser.parseURL(CORS_PROXY + feed_url);
-          // console.log("feed: " + JSON.stringify(feed, null, 4));
-          console.log(this.state.previous_feeds);
           this.setState({
             episodes: feed.items,
             program_title: feed.title,
@@ -112,22 +110,20 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">quick-feed</h1>
         </header>
-        {this.state.past ? (
-          <SearchHistory history={this.state.previous_feeds} />
-        ) : (
-          <div></div>
-        )}
         <UserForm
           getFeed={this.getFeed}
           onClick={() => this.setState({ fetching: true })}
+          past={this.state.past}
+          previous_feeds={[...this.state.previous_feeds]}
         />
         {this.state.error ? this.renderAlert() : <div />}
-        {!this.state.fetching ? (
-          <p>Please enter an RSS feed</p>
+
+        {!this.state.past ? <p>Please enter an RSS feed</p> : <div></div>}
+
+        {this.state.fetching ? (
+          <img src={logo} className="App-logo" alt="App Logo" />
         ) : (
-          <div>
-            <img src={logo} className="App-logo" alt="App Logo" />
-          </div>
+          <div></div>
         )}
         <EpisodeList
           episodes={this.state.episodes}

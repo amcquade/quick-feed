@@ -1,5 +1,8 @@
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import Episode from "./Episode";
+
+
 
 class EpisodeList extends Component {
   cardStyle = {
@@ -9,6 +12,7 @@ class EpisodeList extends Component {
   renderEpisodeList = () => {
     return (
       <div>
+        <div id="menu" styles={{ float: "left" }}></div>
         <div className="card" style={this.cardStyle}>
           <img src={this.props.program_image} className="card-img-top" alt={this.props.program_title} />
           <div className="card-body">

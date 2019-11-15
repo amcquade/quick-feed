@@ -1,25 +1,50 @@
-import React, { Component } from "react";
+import React from "react";
+import Button from "@material-ui/core/Button";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import "../App.css";
+export default function SearchHistory(props) {
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
-class SearchHistory extends Component {
-  divStyles = {
-    width: "77vw",
-    float: "right",
-    marginRight: "1vw"
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
   };
 
-  render() {
-    return (
-      <ul>
-        {this.props.history.map(function(feed, i) {
-          return (
-            <li key={i} index={i}>
-              {feed}
-            </li>
-          );
-        })}
-      </ul>
-    );
-  }
-}
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-export default SearchHistory;
+  const renderItem = (item, i) => {
+    return (
+      <MenuItem index={i} onClick={handleClose}>
+        {item}
+      </MenuItem>
+    );
+  };
+
+  const renderMenuItems = () => {
+    return <div>{props.history.map(renderItem)}</div>;
+  };
+
+  return (
+    <div>
+      <Button
+        aria-controls="simple-menu"
+        aria-haspopup="true"
+        onClick={handleClick}
+        style={{ color: "grey", margin: "10px" }}
+      >
+        Previous Feeds
+      </Button>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        {props.history ? renderMenuItems() : <div />}
+      </Menu>
+    </div>
+  );
+}

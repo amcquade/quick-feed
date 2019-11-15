@@ -43,6 +43,11 @@ class UserForm extends Component {
           >
             Submit
           </Button>
+          {this.props.past ? (
+              <SearchHistory history={this.props.previous_feeds} />
+          ) : (
+            <div></div>
+          )}
         </form>
       </div>
     );
