@@ -5,7 +5,7 @@ import logo from "../logo.svg";
 const LoadingStatus = ({ fetching }) => {
   const styles = {
     statusContainer: {
-      height: "50px",
+      height: "15px",
       display: "flex",
       justifyContent: "center",
       alignItems: "center"
@@ -44,9 +44,7 @@ const LoadingStatus = ({ fetching }) => {
             <img src={logo} alt="loading animation" />
           </div>
         </div>
-      ) : (
-        <p style={styles.statusText}>Please enter an RSS feed</p>
-      )}
+      ) : (<div></div>)}
     </div>
   );
 };

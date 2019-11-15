@@ -32,7 +32,7 @@ export default function SearchHistory(props) {
         aria-controls="simple-menu"
         aria-haspopup="true"
         onClick={handleClick}
-        style={{ color: "grey", margin: "10px" }}
+        style={{ color: "grey", marginTop: "10px" }}
       >
         Previous Feeds
       </Button>
