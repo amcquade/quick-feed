@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import "./App.css";
 import EpisodeList from "./components/EpisodeList";
 import UserForm from "./components/UserForm";
@@ -12,6 +13,7 @@ import {
   DialogContentText,
   DialogTitle
 } from "@material-ui/core";
+import SearchHistory from "./components/SearchHistory";
 
 class App extends Component {
   state = {
@@ -19,7 +21,21 @@ class App extends Component {
     fetching: false,
     program_title: null,
     program_description: null,
-    program_image: null
+    program_image: null,
+    previous_feeds: [],
+    past: false
+  };
+
+  renderHistoryList = () => {
+    return <ul>{this.state.previous_feeds.map(this.renderHistory)}</ul>;
+  };
+
+  renderHistory = (feed, i) => {
+    return (
+      <li index={i} key={i}>
+        {feed}
+      </li>
+    );
   };
 
   getFeed = e => {
@@ -38,13 +54,14 @@ class App extends Component {
       (async () => {
         try {
           let feed = await parser.parseURL(CORS_PROXY + feed_url);
-          console.log("feed: " + JSON.stringify(feed, null, 4));
           this.setState({
             episodes: feed.items,
             program_title: feed.title,
             fetching: !this.state.fetching,
             program_image: feed.image.url,
             program_description: feed.description,
+            previous_feeds: [...this.state.previous_feeds, feed_url],
+            past: true,
             error: false
           });
         } catch (err) {
@@ -97,9 +114,13 @@ class App extends Component {
         <UserForm
           getFeed={this.getFeed}
           onClick={() => this.setState({ fetching: true })}
+          past={this.state.past}
+          previous_feeds={[...this.state.previous_feeds]}
         />
         {this.state.error ? this.renderAlert() : <div />}
+        {!this.state.past ? <p>Please enter an RSS feed</p> : <div></div>}
         <LoadingStatus fetching={this.state.fetching} />
+
         <EpisodeList
           episodes={this.state.episodes}
           program_title={this.state.program_title}
