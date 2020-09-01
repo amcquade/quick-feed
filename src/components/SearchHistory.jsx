@@ -1,12 +1,10 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import { Button, Menu, MenuItem } from "@material-ui/core";
 import "../App.css";
 export default function SearchHistory(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleClick = event => {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -27,12 +25,12 @@ export default function SearchHistory(props) {
   };
 
   return (
-    <div>
+    <div style={{ padding: "20px 0" }}>
       <Button
         aria-controls="simple-menu"
         aria-haspopup="true"
+        color="primary"
         onClick={handleClick}
-        style={{ color: "grey", marginTop: "10px" }}
       >
         Previous Feeds
       </Button>

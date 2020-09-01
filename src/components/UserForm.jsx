@@ -20,16 +20,21 @@ const UserForm = ({ getFeed, previous_feeds, past }) => {
     <div>
       <form onSubmit={getFeed}>
         <Input
-          style={{ margin: "20px auto", display: "block" }}
+          placeholder="Enter your RSS Feed here..."
           type="text"
           name="feed_url"
           onChange={handleSearchChange}
+          style={{
+            padding: "0.5rem 0",
+          }}
+          fullWidth
         />
         <Button
           type="submit"
           variant="contained"
           color="primary"
           disabled={enabled}
+          style={{ marginTop: "10px" }}
         >
           Submit
         </Button>
