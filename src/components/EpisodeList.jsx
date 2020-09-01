@@ -1,23 +1,29 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import Episode from "./Episode";
-
-
 
 class EpisodeList extends Component {
   cardStyle = {
     width: "20vw",
-    float: "left"
-  }
+    float: "left",
+  };
   renderEpisodeList = () => {
     return (
       <div>
         <div id="menu" styles={{ float: "left" }}></div>
         <div className="card" style={this.cardStyle}>
-          <img src={this.props.program_image} className="card-img-top" alt={this.props.program_title} />
+          <img
+            src={this.props.program_image}
+            className="card-img-top"
+            alt={this.props.program_title}
+          />
           <div className="card-body">
             <h5 className="card-title">{this.props.program_title}</h5>
-            <div className="card-text" dangerouslySetInnerHTML={{ __html: this.props.program_description }}></div>
+            <div
+              className="card-text"
+              dangerouslySetInnerHTML={{
+                __html: this.props.program_description,
+              }}
+            ></div>
           </div>
         </div>
         {this.props.episodes.map(this.returnEpisodes)}
@@ -28,7 +34,7 @@ class EpisodeList extends Component {
   returnEpisodes = (episode, i) => {
     return (
       <Episode
-        key={i}
+        key={Math.floor(Math.random() * 500) + i}
         index={i}
         title={episode.title}
         enclosure={episode.enclosure}
