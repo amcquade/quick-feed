@@ -14,7 +14,7 @@ export default function SearchHistory(props) {
 
   const renderItem = (item, i) => {
     return (
-      <MenuItem index={i} onClick={handleClose}>
+      <MenuItem index={Math.random() * i} onClick={handleClose}>
         {item}
       </MenuItem>
     );
