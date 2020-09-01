@@ -38,6 +38,17 @@ img {
   text-align: center;
 }
 
+.audioPlayer,
+.audioPlayer:hover,
+.audioPlayer:focus,
+.audioPlayer:active {
+  width: 100%;
+  outline: none;
+  border-radius: 0px;
+  background-color: #f1f3f4;
+  border: 1px solid #ccc;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
