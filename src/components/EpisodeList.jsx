@@ -28,7 +28,12 @@ class EpisodeList extends Component {
               />
               <div className="card-body">
                 <h5 className="card-title">{program_title}</h5>
-                <div className="card-text">{program_description}</div>
+                <div
+                  className="card-text"
+                  dangerouslySetInnerHTML={{
+                    __html: program_description,
+                  }}
+                />
               </div>
             </div>
             {episodes.map((episode, i) => (
