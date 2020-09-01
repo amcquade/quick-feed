@@ -1,136 +1,118 @@
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
-import "./App.css";
-import EpisodeList from "./components/EpisodeList";
-import UserForm from "./components/UserForm";
-import LoadingStatus from "./components/LoadingStatus";
-
+import React, { useState } from "react";
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle
+  DialogTitle,
 } from "@material-ui/core";
-import SearchHistory from "./components/SearchHistory";
 
-class App extends Component {
-  state = {
-    episodes: null,
-    fetching: false,
-    program_title: null,
-    program_description: null,
-    program_image: null,
-    previous_feeds: [],
-    past: false
-  };
+import "./App.css";
+import EpisodeList from "./components/EpisodeList";
+import UserForm from "./components/UserForm";
+import LoadingStatus from "./components/LoadingStatus";
 
-  renderHistoryList = () => {
-    return <ul>{this.state.previous_feeds.map(this.renderHistory)}</ul>;
-  };
+const App = ({ fetching }) => {
+  const [fetched, setFetched] = useState({});
+  const [onFetching, setFetching] = useState(false);
+  const [previousFeeds, setPreviousFeeds] = useState([]);
+  const [past, setPast] = useState(false);
+  const [error, setError] = useState(false);
 
-  renderHistory = (feed, i) => {
-    return (
-      <li index={i} key={i}>
-        {feed}
-      </li>
-    );
-  };
-
-  getFeed = e => {
-    this.setState({ fetching: !this.state.fetching });
-    e.preventDefault();
-    const feed_url = e.target.elements.feed_url.value;
-    let Parser = require("rss-parser");
-    let parser = new Parser({
+  const getFeed = (event) => {
+    setFetching((prev) => !prev);
+    event.preventDefault();
+    const feed_url = event.target.elements.feed_url.value;
+    const Parser = require("rss-parser");
+    const parser = new Parser({
       customFields: {
-        item: [["enclosure", { keepArray: true }]]
-      }
+        item: [["enclosure", { keepArray: true }]],
+      },
     });
+
     const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
 
     if (feed_url) {
-      (async () => {
+      const loadRSS = async () => {
         try {
-          let feed = await parser.parseURL(CORS_PROXY + feed_url);
-          this.setState({
+          const feed = await parser.parseURL(CORS_PROXY + feed_url);
+          setFetched({
             episodes: feed.items,
             program_title: feed.title,
-            fetching: !this.state.fetching,
             program_image: feed.image.url,
             program_description: feed.description,
-            previous_feeds: [...this.state.previous_feeds, feed_url],
-            past: true,
-            error: false
           });
-        } catch (err) {
-          console.log(err);
-          this.setState({ error: true, fetching: false });
+          setFetching((prev) => !prev);
+          setPreviousFeeds([...previousFeeds, feed_url]);
+          setPast(true);
+
+          return setError(false);
+        } catch (error) {
+          setFetching(false);
+          setError(true);
+
+          return error;
         }
-      })();
+      };
+
+      return loadRSS();
     } else {
       return;
     }
   };
 
-  handleClose = () => {
-    this.setState({
-      error: false,
-      fetching: false
-    });
+  const handleClose = () => {
+    setFetching(false);
+    setError(false);
   };
 
-  renderAlert = () => {
-    return (
-      <div>
-        <Dialog
-          open={this.state.error}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">Error Parsing Feed</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Please try retyping your RSS feed, or try a new one.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary" autoFocus>
-              Close
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
-    );
-  };
+  const renderAlert = () => (
+    <div>
+      <Dialog
+        open={error}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Error Parsing Feed</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Please try retyping your RSS feed, or try a new one.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary" autoFocus>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
 
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">quick-feed</h1>
-        </header>
-        <UserForm
-          getFeed={this.getFeed}
-          onClick={() => this.setState({ fetching: true })}
-          past={this.state.past}
-          previous_feeds={[...this.state.previous_feeds]}
-        />
-        {this.state.error ? this.renderAlert() : <div />}
-        {!this.state.past ? <p>Please enter an RSS feed</p> : <div></div>}
-        <LoadingStatus fetching={this.state.fetching} />
+  return (
+    <div className="App">
+      <header className="App-header">
+        <h1 className="App-title">quick-feed</h1>
+      </header>
+      <UserForm
+        getFeed={getFeed}
+        onClick={() => setFetching(true)}
+        past={past}
+        previous_feeds={[...previousFeeds]}
+      />
+      {error ? renderAlert() : <div />}
+      {!past ? <p>Please enter an RSS feed</p> : <div></div>}
+      <LoadingStatus fetching={onFetching} />
 
-        <EpisodeList
-          episodes={this.state.episodes}
-          program_title={this.state.program_title}
-          program_description={this.state.program_description}
-          program_image={this.state.program_image}
-          fetching={this.props.fetching}
-        />
-      </div>
-    );
-  }
-}
+      <EpisodeList
+        episodes={fetched.episodes}
+        program_title={fetched.program_title}
+        program_description={fetched.program_description}
+        program_image={fetched.program_image}
+        fetching={fetching}
+      />
+    </div>
+  );
+};
 
 export default App;
