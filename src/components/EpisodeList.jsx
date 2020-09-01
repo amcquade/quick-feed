@@ -6,52 +6,51 @@ class EpisodeList extends Component {
     width: "20vw",
     float: "left",
   };
-  renderEpisodeList = () => {
-    return (
-      <div>
-        <div id="menu" styles={{ float: "left" }}></div>
-        <div className="card" style={this.cardStyle}>
-          <img
-            src={this.props.program_image}
-            className="card-img-top"
-            alt={this.props.program_title}
-          />
-          <div className="card-body">
-            <h5 className="card-title">{this.props.program_title}</h5>
-            <div
-              className="card-text"
-              dangerouslySetInnerHTML={{
-                __html: this.props.program_description,
-              }}
-            ></div>
-          </div>
-        </div>
-        {this.props.episodes.map(this.returnEpisodes)}
-      </div>
-    );
-  };
-
-  returnEpisodes = (episode, i) => {
-    return (
-      <Episode
-        key={Math.floor(Math.random() * 500) + i}
-        index={i}
-        title={episode.title}
-        enclosure={episode.enclosure}
-        link={
-          episode.enclosure
-            ? episode.enclosure.url
-            : "json_data is null or undefined"
-        }
-        image={this.props.program_image}
-        description={episode.description}
-      />
-    );
-  };
 
   render() {
+    const {
+      program_title,
+      program_description,
+      program_image,
+      episodes,
+    } = this.props;
+
     return (
-      <div>{this.props.episodes ? this.renderEpisodeList() : <div />}</div>
+      <div>
+        {episodes ? (
+          <div>
+            <div id="menu" styles={{ float: "left" }}></div>
+            <div className="card" style={this.cardStyle}>
+              <img
+                src={program_image}
+                className="card-img-top"
+                alt={program_title}
+              />
+              <div className="card-body">
+                <h5 className="card-title">{program_title}</h5>
+                <div className="card-text">{program_description}</div>
+              </div>
+            </div>
+            {episodes.map((episode, i) => (
+              <Episode
+                key={Math.random() * i}
+                index={i}
+                title={episode.title}
+                enclosure={episode.enclosure}
+                link={
+                  episode.enclosure
+                    ? episode.enclosure.url
+                    : "json_data is null or undefined"
+                }
+                image={program_image}
+                description={episode.description}
+              />
+            ))}
+          </div>
+        ) : (
+          <div />
+        )}
+      </div>
     );
   }
 }
