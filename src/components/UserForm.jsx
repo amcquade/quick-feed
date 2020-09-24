@@ -1,57 +1,47 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 import SearchHistory from "./SearchHistory";
 
-class UserForm extends Component {
-  constructor(props) {
-    super(props);
+const UserForm = ({ getFeed, previous_feeds, past }) => {
+  const [enabled, setEnabled] = useState(true);
+  const [feeds, setFeeds] = useState([]);
 
-    this.state = {
-      enabled: true,
-      feeds: []
-    };
+  const handleSearchChange = (event) => {
+    const { value } = event.target;
 
-    this.handleSearchChange = this.handleSearchChange.bind(this);
-  }
+    if (value === "") return setEnabled(true);
 
-  handleSearchChange(e) {
-    const value = e.target.value;
-    //console.log(this.state.feeds);
-    if (value !== "") {
-      this.setState({ enabled: false, feeds: [...this.state.feeds, value] });
-    } else {
-      this.setState({ enabled: true });
-    }
-  }
+    setEnabled(false);
+    setFeeds([...feeds, value]);
+  };
 
-  render() {
-    return (
-      <div>
-        <form onSubmit={this.props.getFeed}>
-          <Input
-            style={{ margin: "20px auto", display: "block" }}
-            type="text"
-            name="feed_url"
-            onChange={this.handleSearchChange}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            disabled={this.state.enabled}
-          >
-            Submit
-          </Button>
-          {this.props.past ? (
-              <SearchHistory history={this.props.previous_feeds} />
-          ) : (
-            <div></div>
-          )}
-        </form>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <form onSubmit={getFeed}>
+        <Input
+          placeholder="Enter your RSS Feed here..."
+          type="text"
+          name="feed_url"
+          onChange={handleSearchChange}
+          style={{
+            padding: "0.5rem 0",
+          }}
+          fullWidth
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={enabled}
+          style={{ marginTop: "10px" }}
+        >
+          Submit
+        </Button>
+        {past ? <SearchHistory history={previous_feeds} /> : <div></div>}
+      </form>
+    </div>
+  );
+};
 
 export default UserForm;
