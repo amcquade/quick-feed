@@ -22,7 +22,8 @@ const App = ({ fetching }) => {
 
   const getFeed = (event) => {
     setFetching((prev) => !prev);
-    event.preventDefault();
+    if (event.preventDefault != null)
+      event.preventDefault();
     const feed_url = event.target.elements.feed_url.value;
     const Parser = require("rss-parser");
     const parser = new Parser({
@@ -44,7 +45,7 @@ const App = ({ fetching }) => {
             program_description: feed.description,
           });
           setFetching((prev) => !prev);
-          setPreviousFeeds([...previousFeeds, feed_url]);
+          setPreviousFeeds([...new Set([...previousFeeds, feed_url])]);
           setPast(true);
 
           return setError(false);

@@ -8,13 +8,15 @@ export default function SearchHistory(props) {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (event) => {
+    if (event.currentTarget.innerText != '') 
+      props.getFeed({target: {elements: {feed_url: {value: event.currentTarget.innerText}}}});
     setAnchorEl(null);
   };
 
   const renderItem = (item, i) => {
     return (
-      <MenuItem index={Math.random() * i} onClick={handleClose}>
+      <MenuItem key={i} index={i} onClick={handleClose}>
         {item}
       </MenuItem>
     );

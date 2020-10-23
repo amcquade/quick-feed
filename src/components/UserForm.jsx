@@ -38,7 +38,7 @@ const UserForm = ({ getFeed, previous_feeds, past }) => {
         >
           Submit
         </Button>
-        {past ? <SearchHistory history={previous_feeds} /> : <div></div>}
+        {past ? <SearchHistory getFeed={getFeed} history={previous_feeds} /> : <div></div>}
       </form>
     </div>
   );
