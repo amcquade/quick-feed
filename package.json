@@ -5,7 +5,7 @@
   "homepage": "https://amcquade.github.io/quick-feed",
   "dependencies": {
     "@material-ui/core": "^3.9.3",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "react": "^16.10.2",
     "react-audio-player": "^0.13.0",
     "react-dom": "^16.10.2",
