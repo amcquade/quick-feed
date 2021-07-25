@@ -101,8 +101,8 @@ const App = ({ fetching }) => {
         past={past}
         previous_feeds={[...previousFeeds]}
       />
-      {error ? renderAlert() : <div />}
-      {!past ? <p>Please enter an RSS feed</p> : <div></div>}
+      {error ? renderAlert() : null}
+      {!past ? <p>Please enter an RSS feed</p> : null}
       <LoadingStatus fetching={onFetching} />
 
       <EpisodeList
