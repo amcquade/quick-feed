@@ -32,7 +32,7 @@ const App = ({ fetching }) => {
       },
     });
 
-    const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
+    const CORS_PROXY = "https://cors.bridged.cc/";
 
     if (feed_url) {
       const loadRSS = async () => {
