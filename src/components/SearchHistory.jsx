@@ -9,8 +9,12 @@ export default function SearchHistory(props) {
   };
 
   const handleClose = (event) => {
-    if (event.currentTarget.innerText != '') 
-      props.getFeed({target: {elements: {feed_url: {value: event.currentTarget.innerText}}}});
+    if (event.currentTarget.innerText !== "")
+      props.getFeed({
+        target: {
+          elements: { feed_url: { value: event.currentTarget.innerText } },
+        },
+      });
     setAnchorEl(null);
   };
 

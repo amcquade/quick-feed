@@ -8,10 +8,11 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 
-import "./App.css";
 import EpisodeList from "./components/EpisodeList";
 import UserForm from "./components/UserForm";
 import LoadingStatus from "./components/LoadingStatus";
+
+import "./App.css";
 
 const App = ({ fetching }) => {
   const [fetched, setFetched] = useState({});
@@ -22,8 +23,7 @@ const App = ({ fetching }) => {
 
   const getFeed = (event) => {
     setFetching((prev) => !prev);
-    if (event.preventDefault != null)
-      event.preventDefault();
+    if (event.preventDefault != null) event.preventDefault();
     const feed_url = event.target.elements.feed_url.value;
     const Parser = require("rss-parser");
     const parser = new Parser({
