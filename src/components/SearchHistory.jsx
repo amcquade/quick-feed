@@ -9,8 +9,12 @@ export default function SearchHistory(props) {
   };
 
   const handleClose = (event) => {
-    if (event.currentTarget.innerText != '') 
-      props.getFeed({target: {elements: {feed_url: {value: event.currentTarget.innerText}}}});
+    if (event.currentTarget.innerText !== "")
+      props.getFeed({
+        target: {
+          elements: { feed_url: { value: event.currentTarget.innerText } },
+        },
+      });
     setAnchorEl(null);
   };
 
@@ -29,15 +33,15 @@ export default function SearchHistory(props) {
   return (
     <div style={{ padding: "20px 0" }}>
       <Button
-        aria-controls="simple-menu"
-        aria-haspopup="true"
-        color="primary"
+        aria-controls='simple-menu'
+        aria-haspopup='true'
+        color='primary'
         onClick={handleClick}
       >
         Previous Feeds
       </Button>
       <Menu
-        id="simple-menu"
+        id='simple-menu'
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}

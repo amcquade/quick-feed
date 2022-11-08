@@ -6,7 +6,7 @@
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "axios": "^0.18.1",
-    "react": "^16.10.2",
+    "react": "^16.14.0",
     "react-audio-player": "^0.13.0",
     "react-dom": "^16.10.2",
     "react-scripts": "^3.2.0",

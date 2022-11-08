@@ -5,6 +5,8 @@ You can try out the app [here](https://amcquade.github.io/quick-feed/).
 
 ![quick-feed demo](demo/demo.gif)
 
+###### Demo RSS Feed URL for testing: https://feeds.megaphone.fm/replyall
+
 ###### This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). You can read more about it [here](learnMoreReact.md).
 
 ## Available Scripts
