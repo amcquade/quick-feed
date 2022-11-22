@@ -9,7 +9,7 @@
     "react": "^16.10.2",
     "react-audio-player": "^0.13.0",
     "react-dom": "^16.10.2",
-    "react-scripts": "^3.2.0",
+    "react-scripts": "^5.0.1",
     "rss-parser": "^3.7.3"
   },
   "scripts": {
