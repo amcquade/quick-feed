@@ -66,3 +66,7 @@ img {
     transform: rotate(360deg);
   }
 }
+
+.options-nav {
+  display: flex;
+}

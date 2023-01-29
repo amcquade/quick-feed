@@ -39,7 +39,11 @@ const UserForm = ({ getFeed, previous_feeds, past }) => {
         >
           Submit
         </Button>
-        {past ? <SearchHistory getFeed={getFeed} history={previous_feeds} /> : <div></div>}
+        {past ? <nav className="options-nav">
+          <SearchHistory getFeed={getFeed}
+          history={previous_feeds} />
+          <div style={{ padding: "20px 0" }}><Button onClick={() => {alert('test button')}}>Favorites Section</Button></div> 
+        </nav> : <div></div>}
       </form>
     </div>
   );
