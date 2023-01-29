@@ -12,6 +12,8 @@ import "./App.css";
 import EpisodeList from "./components/EpisodeList";
 import UserForm from "./components/UserForm";
 import LoadingStatus from "./components/LoadingStatus";
+import FavoriteDialog from "./components/FavoriteDialog";
+import { useRef } from "react";
 
 const App = ({ fetching }) => {
   const [fetched, setFetched] = useState({});
@@ -19,6 +21,8 @@ const App = ({ fetching }) => {
   const [previousFeeds, setPreviousFeeds] = useState([]);
   const [past, setPast] = useState(false);
   const [error, setError] = useState(false);
+
+  const favoritesPopUpRef = useRef();
 
   const getFeed = (event) => {
     setFetching((prev) => !prev);
@@ -112,6 +116,9 @@ const App = ({ fetching }) => {
         program_image={fetched.program_image}
         fetching={fetching}
       />
+
+      {/* Favorite feeds list dialog component */}
+      <FavoriteDialog ref={favoritesPopUpRef} />
     </div>
   );
 };
