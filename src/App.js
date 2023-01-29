@@ -14,6 +14,7 @@ import UserForm from "./components/UserForm";
 import LoadingStatus from "./components/LoadingStatus";
 import FavoriteDialog from "./components/FavoriteDialog";
 import { useRef } from "react";
+import SearchHistory from "./components/SearchHistory";
 
 const App = ({ fetching }) => {
   const [fetched, setFetched] = useState({});
@@ -105,6 +106,12 @@ const App = ({ fetching }) => {
         past={past}
         previous_feeds={[...previousFeeds]}
       />
+      
+      {past ? <nav className="options-nav">
+          <SearchHistory getFeed={getFeed} history={[...previousFeeds]} />
+          <div style={{ padding: "20px 0" }}><Button onClick={() => {favoritesPopUpRef.current.handleClickOpen()}}>Favorites Section</Button></div> 
+        </nav> : <div></div>}
+
       {error ? renderAlert() : <div />}
       {!past ? <p>Please enter an RSS feed</p> : <div></div>}
       <LoadingStatus fetching={onFetching} />
