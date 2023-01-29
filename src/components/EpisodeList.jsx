@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import FavoriteButton from "./FavoriteButton";
 import Episode from "./Episode";
+
 
 class EpisodeList extends Component {
   cardStyle = {
@@ -15,6 +17,10 @@ class EpisodeList extends Component {
       episodes,
     } = this.props;
 
+    const toggleFavorite = () => {
+      alert('test');
+    }
+
     return (
       <div>
         {episodes ? (
@@ -28,6 +34,9 @@ class EpisodeList extends Component {
               />
               <div className="card-body">
                 <h5 className="card-title">{program_title}</h5>
+                <FavoriteButton 
+                  selected={true}
+                  onClickAction={toggleFavorite} />
                 <div
                   className="card-text"
                   dangerouslySetInnerHTML={{

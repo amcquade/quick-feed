@@ -49,6 +49,14 @@ img {
   border: 1px solid #ccc;
 }
 
+.favorite{
+  cursor: pointer;
+  margin: 0.5rem auto;
+}
+.favorite:hover {
+  fill: rgb(250, 218, 148);
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -65,4 +73,6 @@ img {
   to {
     transform: rotate(360deg);
   }
+
+  
 }
