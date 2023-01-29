@@ -76,3 +76,7 @@ img {
 
   
 }
+
+.options-nav {
+  display: flex;
+}

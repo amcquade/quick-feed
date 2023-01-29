@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
-import SearchHistory from "./SearchHistory";
 
-const UserForm = ({ getFeed, previous_feeds, past }) => {
+const UserForm = ({ getFeed }) => {
   const [enabled, setEnabled] = useState(true);
   const [feeds, setFeeds] = useState([]);
 
@@ -39,7 +38,6 @@ const UserForm = ({ getFeed, previous_feeds, past }) => {
         >
           Submit
         </Button>
-        {past ? <SearchHistory getFeed={getFeed} history={previous_feeds} /> : <div></div>}
       </form>
     </div>
   );
