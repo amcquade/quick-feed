@@ -5,6 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import "../App.css";
+import FavoriteItem from './FavoriteItem';
 const { forwardRef, useImperativeHandle } = React;
 
 const FavoriteDialog = forwardRef((props, ref) => {
@@ -23,6 +24,18 @@ const FavoriteDialog = forwardRef((props, ref) => {
         handleClose: handleClose
     }});
     
+    const getFavoritesFeeds = () => {
+
+      let favorites = [];
+      for (let [key, value] of Object.entries(localStorage)) {
+        if (key.startsWith('favorite-')) {
+            favorites.push(JSON.parse(value));
+        }
+      } 
+      return favorites;
+    } 
+
+
     return (
       <div>
         <Dialog
@@ -34,7 +47,21 @@ const FavoriteDialog = forwardRef((props, ref) => {
         >
           <DialogTitle id="scroll-dialog-title">Favorite feeds</DialogTitle>
           <DialogContent>
-            <p>Favorite item placeholder</p>
+            <div className="favorites-list-section">
+
+            {
+              getFavoritesFeeds().length > 0 ? getFavoritesFeeds().map((item, i) => {
+                return (
+                  <FavoriteItem 
+                    item={item} 
+                    closePopUp={() => {handleClose()}} 
+                    key={i} index={i} />)
+                }) 
+                : 
+                <div>No favorites</div>
+            }
+
+            </div>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => handleClose()} color="primary">
