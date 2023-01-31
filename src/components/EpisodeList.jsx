@@ -4,21 +4,18 @@ import Episode from "./Episode";
 import { useState } from "react";
 
 
-const  EpisodeList = ({
+const EpisodeList = ({
     program_title,
     program_description,
     program_image,
     episodes,
-    program_link
+    program_link,
+    updateFavorites,
+    isFavoriteSelected
   }) => {
-  
-  const checkLocalStorage = () => {
-    return !!localStorage.getItem(`favorite-${program_link}`);
-  }
   
   // eslint-disable-next-line no-unused-vars
   const [cardStyle, setCardStyle] = useState({width: "20vw", float: "left"});
-  const [selectedValue, setSelectedValue] = useState(checkLocalStorage);
 
   const toggleFavorite = () => {
     const feed_data = {
@@ -28,10 +25,9 @@ const  EpisodeList = ({
       program_link,
     };
 
-    selectedValue? localStorage.removeItem(`favorite-${program_link}`) : localStorage.setItem(`favorite-${program_link}`, JSON.stringify(feed_data));
-    setSelectedValue(checkLocalStorage);
+    isFavoriteSelected(program_link) ? localStorage.removeItem(`favorite-${program_link}`) : localStorage.setItem(`favorite-${program_link}`, JSON.stringify(feed_data));
+    updateFavorites();
   }
-  
 
   return (
     <div>
@@ -47,7 +43,7 @@ const  EpisodeList = ({
             <div className="card-body">
               <h5 className="card-title">{program_title}</h5>
               <FavoriteButton 
-                selected={selectedValue}
+                selected={isFavoriteSelected(program_link)}
                 onClickAction={toggleFavorite} />
               <div
                 className="card-text"

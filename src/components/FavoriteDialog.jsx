@@ -23,18 +23,6 @@ const FavoriteDialog = forwardRef((props, ref) => {
         handleClickOpen: handleClickOpen,
         handleClose: handleClose
     }});
-    
-    const getFavoritesFeeds = () => {
-
-      let favorites = [];
-      for (let [key, value] of Object.entries(localStorage)) {
-        if (key.startsWith('favorite-')) {
-            favorites.push(JSON.parse(value));
-        }
-      } 
-      return favorites;
-    } 
-
 
     return (
       <div>
@@ -50,10 +38,12 @@ const FavoriteDialog = forwardRef((props, ref) => {
             <div className="favorites-list-section">
 
             {
-              getFavoritesFeeds().length > 0 ? getFavoritesFeeds().map((item, i) => {
+              props.favoriteFeeds.length > 0 ? props.favoriteFeeds.map((item, i) => {
                 return (
                   <FavoriteItem 
-                    item={item} 
+                    item={item}
+                    updateFavorites={props.updateFavorites} 
+                    isFavoriteSelected={props.isFavoriteSelected}
                     closePopUp={() => {handleClose()}} 
                     key={i} index={i} />)
                 }) 

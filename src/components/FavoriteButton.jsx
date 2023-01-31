@@ -23,8 +23,6 @@ const FavoriteButton = ({selected, onClickAction}) => {
         },
       });
 
-
-
     const StarIcon = (props) => {
         return (
           <SvgIcon {...props}>
