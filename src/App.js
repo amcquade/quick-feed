@@ -49,7 +49,7 @@ const App = ({ fetching }) => {
             program_title: feed.title,
             program_image: feed.image.url,
             program_description: feed.description,
-            program_link: feed.link,
+            program_link: feed_url,
           });
           setFetching((prev) => !prev);
           setPreviousFeeds([...new Set([...previousFeeds, feed_url])]);
@@ -149,7 +149,7 @@ const App = ({ fetching }) => {
       <LoadingStatus fetching={onFetching} />
 
       {/* Favorite feeds list dialog component */}
-      <FavoriteDialog favoriteFeeds={favoriteFeeds} updateFavorites={updateFavoritesFeeds} isFavoriteSelected={isFavoriteSelected} ref={favoritesPopUpRef} />
+      <FavoriteDialog favoriteFeeds={favoriteFeeds} updateFavorites={updateFavoritesFeeds} getFeed={getFeed} isFavoriteSelected={isFavoriteSelected} ref={favoritesPopUpRef} />
     </div>
   );
 };
