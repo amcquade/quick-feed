@@ -1,18 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import "../App.css";
 import FavoriteButton from "./FavoriteButton";
 
-const FavoriteItem = ({item, index, closePopUp}) => {
-
-    const checkLocalStorage = () => {
-        return !!localStorage.getItem(`favorite-${item.program_link}`);
-    }
-
-    const [selectedValue, setSelectedValue] = useState(checkLocalStorage);
+const FavoriteItem = ({item, index, closePopUp, updateFavorites, isFavoriteSelected}) => {
 
     const removeFavorite = () => {
         localStorage.removeItem(`favorite-${item.program_link}`);
-        setSelectedValue(false);
+        updateFavorites();
     }
 
     return (
@@ -29,7 +23,7 @@ const FavoriteItem = ({item, index, closePopUp}) => {
                     <p className="description">{item.program_description}</p>
                 </div>
             </div>
-            <FavoriteButton selected={selectedValue}
+            <FavoriteButton selected={isFavoriteSelected(item.program_link)}
                 onClickAction={removeFavorite} />
         </div>
     )

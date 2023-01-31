@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Dialog,
@@ -22,6 +22,7 @@ const App = ({ fetching }) => {
   const [previousFeeds, setPreviousFeeds] = useState([]);
   const [past, setPast] = useState(false);
   const [error, setError] = useState(false);
+  const [favoriteFeeds, setFavoriteFeeds] = useState([]);
 
   const favoritesPopUpRef = useRef();
 
@@ -96,6 +97,24 @@ const App = ({ fetching }) => {
     </div>
   );
 
+  const isFavoriteSelected = (link) => {
+    return favoriteFeeds.some(el => el.program_link === link);
+  }
+
+  const updateFavoritesFeeds = () => {
+    let favorites = [];
+    for (let [key, value] of Object.entries(localStorage)) {
+      if (key.startsWith('favorite-')) {
+          favorites.push(JSON.parse(value));
+      }
+    } 
+    setFavoriteFeeds(favorites);
+  }
+
+  useEffect(() => {
+    updateFavoritesFeeds();
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -108,26 +127,29 @@ const App = ({ fetching }) => {
         previous_feeds={[...previousFeeds]}
       />
       
-      {past ? <nav className="options-nav">
-          <SearchHistory getFeed={getFeed} history={[...previousFeeds]} />
-          <div style={{ padding: "20px 0" }}><Button onClick={() => {favoritesPopUpRef.current.handleClickOpen()}}>Favorites Section</Button></div> 
-        </nav> : <div></div>}
+      {past ? <>
+          <nav className="options-nav">
+            <SearchHistory getFeed={getFeed} history={[...previousFeeds]} />
+            <div style={{ padding: "20px 0" }}><Button onClick={() => {favoritesPopUpRef.current.handleClickOpen()}}>Favorites Section</Button></div> 
+          </nav>
+          <EpisodeList
+            episodes={fetched.episodes}
+            program_title={fetched.program_title}
+            program_description={fetched.program_description}
+            program_image={fetched.program_image}
+            fetching={fetching}
+            program_link={fetched.program_link}
+            isFavoriteSelected={isFavoriteSelected} 
+            updateFavorites={updateFavoritesFeeds}
+            />
+          </> : <div></div>}
 
       {error ? renderAlert() : <div />}
       {!past ? <p>Please enter an RSS feed</p> : <div></div>}
       <LoadingStatus fetching={onFetching} />
 
-      <EpisodeList
-        episodes={fetched.episodes}
-        program_title={fetched.program_title}
-        program_description={fetched.program_description}
-        program_image={fetched.program_image}
-        fetching={fetching}
-        program_link={fetched.program_link}
-      />
-
       {/* Favorite feeds list dialog component */}
-      <FavoriteDialog ref={favoritesPopUpRef} />
+      <FavoriteDialog favoriteFeeds={favoriteFeeds} updateFavorites={updateFavoritesFeeds} isFavoriteSelected={isFavoriteSelected} ref={favoritesPopUpRef} />
     </div>
   );
 };
