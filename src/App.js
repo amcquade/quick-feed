@@ -30,7 +30,7 @@ const App = ({ fetching }) => {
     setFetching((prev) => !prev);
     if (event.preventDefault != null)
       event.preventDefault();
-    const feed_url = event.target.elements.feed_url.value;
+    const feed_url = formatUrl(event.target.elements.feed_url.value);
     const Parser = require("rss-parser");
     const parser = new Parser({
       customFields: {
@@ -68,6 +68,10 @@ const App = ({ fetching }) => {
     } else {
       return;
     }
+  };
+
+  const formatUrl = (url) => {
+    return url.startsWith('https://') ? url : `https://${url}`;
   };
 
   const handleClose = () => {
