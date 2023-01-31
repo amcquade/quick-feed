@@ -9,15 +9,29 @@ const  EpisodeList = ({
     program_description,
     program_image,
     episodes,
+    program_link
   }) => {
   
+  const checkLocalStorage = () => {
+    return !!localStorage.getItem(`favorite-${program_link}`);
+  }
   
   // eslint-disable-next-line no-unused-vars
   const [cardStyle, setCardStyle] = useState({width: "20vw", float: "left"});
+  const [selectedValue, setSelectedValue] = useState(checkLocalStorage);
 
   const toggleFavorite = () => {
-    alert('test');
+    const feed_data = {
+      program_title,
+      program_description,
+      program_image,
+      program_link,
+    };
+
+    selectedValue? localStorage.removeItem(`favorite-${program_link}`) : localStorage.setItem(`favorite-${program_link}`, JSON.stringify(feed_data));
+    setSelectedValue(checkLocalStorage);
   }
+  
 
   return (
     <div>
@@ -33,7 +47,7 @@ const  EpisodeList = ({
             <div className="card-body">
               <h5 className="card-title">{program_title}</h5>
               <FavoriteButton 
-                selected={true}
+                selected={selectedValue}
                 onClickAction={toggleFavorite} />
               <div
                 className="card-text"

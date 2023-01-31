@@ -48,6 +48,7 @@ const App = ({ fetching }) => {
             program_title: feed.title,
             program_image: feed.image.url,
             program_description: feed.description,
+            program_link: feed.link,
           });
           setFetching((prev) => !prev);
           setPreviousFeeds([...new Set([...previousFeeds, feed_url])]);
@@ -122,6 +123,7 @@ const App = ({ fetching }) => {
         program_description={fetched.program_description}
         program_image={fetched.program_image}
         fetching={fetching}
+        program_link={fetched.program_link}
       />
 
       {/* Favorite feeds list dialog component */}
