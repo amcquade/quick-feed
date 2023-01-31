@@ -43,6 +43,7 @@ const FavoriteDialog = forwardRef((props, ref) => {
                   <FavoriteItem 
                     item={item}
                     updateFavorites={props.updateFavorites} 
+                    getFeed={props.getFeed}
                     isFavoriteSelected={props.isFavoriteSelected}
                     closePopUp={() => {handleClose()}} 
                     key={i} index={i} />)

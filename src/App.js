@@ -30,7 +30,7 @@ const App = ({ fetching }) => {
     setFetching((prev) => !prev);
     if (event.preventDefault != null)
       event.preventDefault();
-    const feed_url = event.target.elements.feed_url.value;
+    const feed_url = formatUrl(event.target.elements.feed_url.value);
     const Parser = require("rss-parser");
     const parser = new Parser({
       customFields: {
@@ -49,7 +49,7 @@ const App = ({ fetching }) => {
             program_title: feed.title,
             program_image: feed.image.url,
             program_description: feed.description,
-            program_link: feed.link,
+            program_link: feed_url,
           });
           setFetching((prev) => !prev);
           setPreviousFeeds([...new Set([...previousFeeds, feed_url])]);
@@ -68,6 +68,10 @@ const App = ({ fetching }) => {
     } else {
       return;
     }
+  };
+
+  const formatUrl = (url) => {
+    return url.startsWith('https://') ? url : `https://${url}`;
   };
 
   const handleClose = () => {
@@ -149,7 +153,7 @@ const App = ({ fetching }) => {
       <LoadingStatus fetching={onFetching} />
 
       {/* Favorite feeds list dialog component */}
-      <FavoriteDialog favoriteFeeds={favoriteFeeds} updateFavorites={updateFavoritesFeeds} isFavoriteSelected={isFavoriteSelected} ref={favoritesPopUpRef} />
+      <FavoriteDialog favoriteFeeds={favoriteFeeds} updateFavorites={updateFavoritesFeeds} getFeed={getFeed} isFavoriteSelected={isFavoriteSelected} ref={favoritesPopUpRef} />
     </div>
   );
 };
