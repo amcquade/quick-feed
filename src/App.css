@@ -80,3 +80,78 @@ img {
 .options-nav {
   display: flex;
 }
+
+/* Favorites list section */
+.favorites-list-section {
+  /* padding: 1rem; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.favorite-item {
+  background-color: rgb(242, 242, 242);
+  border-radius: 2px;
+  margin: 1rem;
+  padding:1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.favorite-item .action-container {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  /* height: 200px; */
+}
+
+.favorite-item .action-container > * {
+  margin: 5px;
+}
+
+.favorite-item .img-container {
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 150px;
+  height: 150px;
+}
+
+.favorite-item .img-container > img {
+  max-height: 100%;
+  max-width: 100%;
+  object-position: center;
+  object-fit: cover;
+}
+
+.favorite-item .action-container .informations {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.favorite-item  .informations > .title {
+  font-weight: bold;
+  font-size: 21px;
+}
+
+.favorite-item  .informations > .description {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  /* CSS properties for ellipsis overflow after 5 lines of text */
+  display: block;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  max-height: 5 * 1.6rem;
+}
+
+@media screen and (max-width: 600px) {
+  .favorite-item {
+    flex-direction: column;
+  }
+
+  .favorite-item .action-container {
+    flex-direction: column;
+  }
+}
