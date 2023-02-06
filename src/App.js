@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import {
   Button,
   Dialog,
@@ -12,66 +12,30 @@ import "./App.css";
 import EpisodeList from "./components/EpisodeList";
 import UserForm from "./components/UserForm";
 import LoadingStatus from "./components/LoadingStatus";
+import FavoriteDialog from "./components/FavoriteDialog";
+import { useRef } from "react";
+import SearchHistory from "./components/SearchHistory";
+import { Context } from "./context/Context";
 
-const App = ({ fetching }) => {
-  const [fetched, setFetched] = useState({});
-  const [onFetching, setFetching] = useState(false);
-  const [previousFeeds, setPreviousFeeds] = useState([]);
-  const [past, setPast] = useState(false);
-  const [error, setError] = useState(false);
+const App = () => {
+  const { state, dispatch } = useContext(Context);
 
-  const getFeed = (event) => {
-    setFetching((prev) => !prev);
-    if (event.preventDefault != null)
-      event.preventDefault();
-    const feed_url = event.target.elements.feed_url.value;
-    const Parser = require("rss-parser");
-    const parser = new Parser({
-      customFields: {
-        item: [["enclosure", { keepArray: true }]],
-      },
-    });
+  const favoritesPopUpRef = useRef();
 
-    const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
-
-    if (feed_url) {
-      const loadRSS = async () => {
-        try {
-          const feed = await parser.parseURL(CORS_PROXY + feed_url);
-          setFetched({
-            episodes: feed.items,
-            program_title: feed.title,
-            program_image: feed.image.url,
-            program_description: feed.description,
-          });
-          setFetching((prev) => !prev);
-          setPreviousFeeds([...new Set([...previousFeeds, feed_url])]);
-          setPast(true);
-
-          return setError(false);
-        } catch (error) {
-          setFetching(false);
-          setError(true);
-
-          return error;
-        }
-      };
-
-      return loadRSS();
-    } else {
-      return;
-    }
-  };
+  // Check if the current feed is filled.
+  const isCurrentFeedFetched = () => {
+    return state.currentFeed.program_link && state.currentFeed.program_link !== '';
+  }
 
   const handleClose = () => {
-    setFetching(false);
-    setError(false);
+    dispatch({ type: 'SET_FETCHING',  payload: false });
+    dispatch({ type: 'SET_ERROR',  payload: false });
   };
 
   const renderAlert = () => (
     <div>
       <Dialog
-        open={error}
+        open={state.error}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -95,23 +59,27 @@ const App = ({ fetching }) => {
       <header className="App-header">
         <h1 className="App-title">quick-feed</h1>
       </header>
-      <UserForm
-        getFeed={getFeed}
-        onClick={() => setFetching(true)}
-        past={past}
-        previous_feeds={[...previousFeeds]}
-      />
-      {error ? renderAlert() : <div />}
-      {!past ? <p>Please enter an RSS feed</p> : <div></div>}
-      <LoadingStatus fetching={onFetching} />
+      <UserForm />
+      
+      {isCurrentFeedFetched() ? <>
+          <nav className="options-nav">
+            <SearchHistory />
+            <div style={{ padding: "20px 0" }}><Button onClick={() => {favoritesPopUpRef.current.handleClickOpen()}}>Favorites Section</Button></div> 
+          </nav>
+          <EpisodeList
+            episodes={state.currentFeed.episodes}
+            program_title={state.currentFeed.program_title}
+            program_description={state.currentFeed.program_description}
+            program_image={state.currentFeed.program_image}
+            program_link={state.currentFeed.program_link}
+            />
+          </> : <p>Please enter an RSS feed</p>}
 
-      <EpisodeList
-        episodes={fetched.episodes}
-        program_title={fetched.program_title}
-        program_description={fetched.program_description}
-        program_image={fetched.program_image}
-        fetching={fetching}
-      />
+      {state.error ? renderAlert() : <div />}
+      <LoadingStatus fetching={state.onFetching} />
+
+      {/* Favorite feeds list dialog component */}
+      <FavoriteDialog ref={favoritesPopUpRef} />
     </div>
   );
 };
