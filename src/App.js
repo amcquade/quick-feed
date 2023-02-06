@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
   Dialog,
@@ -15,13 +15,14 @@ import LoadingStatus from "./components/LoadingStatus";
 import FavoriteDialog from "./components/FavoriteDialog";
 import { useRef } from "react";
 import SearchHistory from "./components/SearchHistory";
+import { Context } from "./context/Context";
 
 const App = ({ fetching }) => {
+  const { state, dispatch } = useContext(Context);
   const [fetched, setFetched] = useState({});
   const [onFetching, setFetching] = useState(false);
   const [previousFeeds, setPreviousFeeds] = useState([]);
   const [past, setPast] = useState(false);
-  const [error, setError] = useState(false);
   const [favoriteFeeds, setFavoriteFeeds] = useState([]);
 
   const favoritesPopUpRef = useRef();
@@ -54,11 +55,11 @@ const App = ({ fetching }) => {
           setFetching((prev) => !prev);
           setPreviousFeeds([...new Set([...previousFeeds, feed_url])]);
           setPast(true);
-
-          return setError(false);
+          
+          return dispatch({ type: 'SET_ERROR',  payload: false });;
         } catch (error) {
           setFetching(false);
-          setError(true);
+          dispatch({ type: 'SET_ERROR',  payload: true });
 
           return error;
         }
@@ -86,13 +87,13 @@ const App = ({ fetching }) => {
 
   const handleClose = () => {
     setFetching(false);
-    setError(false);
+    dispatch({ type: 'SET_ERROR',  payload: false });
   };
 
   const renderAlert = () => (
     <div>
       <Dialog
-        open={error}
+        open={state.error}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -153,7 +154,7 @@ const App = ({ fetching }) => {
             />
           </> : <p>Please enter an RSS feed</p>}
 
-      {error ? renderAlert() : <div />}
+      {state.error ? renderAlert() : <div />}
       <LoadingStatus fetching={onFetching} />
 
       {/* Favorite feeds list dialog component */}
