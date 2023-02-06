@@ -151,10 +151,9 @@ const App = ({ fetching }) => {
             isFavoriteSelected={isFavoriteSelected} 
             updateFavorites={updateFavoritesFeeds}
             />
-          </> : <div></div>}
+          </> : <p>Please enter an RSS feed</p>}
 
       {error ? renderAlert() : <div />}
-      {!past ? <p>Please enter an RSS feed</p> : <div></div>}
       <LoadingStatus fetching={onFetching} />
 
       {/* Favorite feeds list dialog component */}
