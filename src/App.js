@@ -135,11 +135,7 @@ const App = ({ fetching }) => {
         <h1 className="App-title">quick-feed</h1>
       </header>
       <UserForm
-        getFeed={getFeed}
-        onClick={() => setFetching(true)}
-        past={past}
-        previous_feeds={[...previousFeeds]}
-      />
+        getFeed={getFeed} />
       
       {past ? <>
           <nav className="options-nav">
@@ -151,7 +147,6 @@ const App = ({ fetching }) => {
             program_title={fetched.program_title}
             program_description={fetched.program_description}
             program_image={fetched.program_image}
-            fetching={fetching}
             program_link={fetched.program_link}
             isFavoriteSelected={isFavoriteSelected} 
             updateFavorites={updateFavoritesFeeds}
