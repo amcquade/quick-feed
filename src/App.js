@@ -70,8 +70,18 @@ const App = ({ fetching }) => {
     }
   };
 
+  // Formatting method for URLs to avoid having duplicate favorites in localstorage as the key used is the URL
   const formatUrl = (url) => {
-    return url.startsWith('https://') ? url : `https://${url}`;
+    let urlSequence;
+    let finalUrl;
+    if (url.includes('://')) {
+      urlSequence = url.split('://')[1];
+      finalUrl = 'https://' + urlSequence;
+    } else {
+      finalUrl = 'https://' + url;
+    }
+
+    return finalUrl;
   };
 
   const handleClose = () => {
