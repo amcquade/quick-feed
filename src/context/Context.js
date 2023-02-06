@@ -1,6 +1,16 @@
 import React, { useReducer, createContext } from "react";
 import { feedReducer } from "./reducers/FeedReducer";
 
+const initFavorites = () => {
+  let favorites = [];
+  for (let [key, value] of Object.entries(localStorage)) {
+      if (key.startsWith('favorite-')) {
+          favorites.push(JSON.parse(value));
+      }
+  }
+  return favorites;
+}
+
 // Initial state
 const initialState = {
   currentFeed: {
@@ -13,7 +23,7 @@ const initialState = {
   onFetching: false,
   previousFeeds: [],
   error: false,
-  favoriteFeeds: []
+  favoriteFeeds: initFavorites()
 };
 
 // Create context

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -6,9 +6,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import "../App.css";
 import FavoriteItem from './FavoriteItem';
+import { Context } from '../context/Context';
 const { forwardRef, useImperativeHandle } = React;
 
 const FavoriteDialog = forwardRef((props, ref) => {
+
+    const {state} = useContext(Context);
 
     const [open, setOpen] = useState(false);
 
@@ -38,13 +41,10 @@ const FavoriteDialog = forwardRef((props, ref) => {
             <div className="favorites-list-section">
 
             {
-              props.favoriteFeeds.length > 0 ? props.favoriteFeeds.map((item, i) => {
+              state.favoriteFeeds.length > 0 ? state.favoriteFeeds.map((item, i) => {
                 return (
                   <FavoriteItem 
                     item={item}
-                    updateFavorites={props.updateFavorites} 
-                    getFeed={props.getFeed}
-                    isFavoriteSelected={props.isFavoriteSelected}
                     closePopUp={() => {handleClose()}} 
                     key={i} index={i} />)
                 }) 

@@ -1,32 +1,34 @@
-import React from "react";
+import React, { useContext } from "react";
 import FavoriteButton from "./FavoriteButton";
 import Episode from "./Episode";
 import { useState } from "react";
-
+import { Context } from "../context/Context";
 
 const EpisodeList = ({
     program_title,
     program_description,
     program_image,
     episodes,
-    program_link,
-    updateFavorites,
-    isFavoriteSelected
+    program_link
   }) => {
+  
+  const { state, dispatch } = useContext(Context);
   
   // eslint-disable-next-line no-unused-vars
   const [cardStyle, setCardStyle] = useState({width: "20vw", float: "left"});
 
   const toggleFavorite = () => {
-    const feed_data = {
+    const feedData = {
       program_title,
-      program_description,
       program_image,
-      program_link,
+      program_description,
+      program_link
     };
+    isFavoriteSelected() ? dispatch({type: 'REMOVE_FAVORITE_FEED', payload: feedData }) : dispatch({type: 'ADD_FAVORITE_FEED', payload: feedData });
+  }
 
-    isFavoriteSelected(program_link) ? localStorage.removeItem(`favorite-${program_link}`) : localStorage.setItem(`favorite-${program_link}`, JSON.stringify(feed_data));
-    updateFavorites();
+  const isFavoriteSelected = () => {
+    return state.favoriteFeeds.some(el => el.program_link === program_link);
   }
 
   return (
@@ -43,7 +45,7 @@ const EpisodeList = ({
             <div className="card-body">
               <h5 className="card-title">{program_title}</h5>
               <FavoriteButton 
-                selected={isFavoriteSelected(program_link)}
+                selected={isFavoriteSelected()}
                 onClickAction={toggleFavorite} />
               <div
                 className="card-text"

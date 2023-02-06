@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
+import { Context } from "../context/Context";
+import { getFeed } from "./utils/httpRequests";
 
-const UserForm = ({ getFeed }) => {
+const UserForm = () => {
+  const { dispatch } = useContext(Context);
   const [enabled, setEnabled] = useState(true);
   const [feeds, setFeeds] = useState([]);
 
@@ -15,9 +18,24 @@ const UserForm = ({ getFeed }) => {
     setFeeds([...feeds, value]);
   };
 
+  const fetchFeed = async (event) => {
+    dispatch({ type: 'SET_FETCHING',  payload: true });
+    try {
+      const feed = await getFeed(event);
+      dispatch({type: 'SET_CURRENT_FEED', payload: feed})
+      dispatch({ type: 'SET_ERROR',  payload: false });
+      return
+    } catch (error) {
+      dispatch({ type: 'SET_ERROR',  payload: true });
+      return error;
+    } finally {
+      dispatch({ type: 'SET_FETCHING',  payload: false });
+    }
+  }
+
   return (
     <div>
-      <form onSubmit={getFeed}>
+      <form onSubmit={fetchFeed}>
         <Input
           placeholder="Enter your RSS Feed here..."
           type="text"
