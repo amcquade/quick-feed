@@ -1,7 +1,8 @@
 import React from "react";
 import { Button, Menu, MenuItem } from "@material-ui/core";
 import "../App.css";
-export default function SearchHistory(props) {
+
+function SearchHistory({getFeed, history}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -10,7 +11,7 @@ export default function SearchHistory(props) {
 
   const handleClose = (event) => {
     if (event.currentTarget.innerText != '') 
-      props.getFeed({target: {elements: {feed_url: {value: event.currentTarget.innerText}}}});
+      getFeed({target: {elements: {feed_url: {value: event.currentTarget.innerText}}}});
     setAnchorEl(null);
   };
 
@@ -23,7 +24,7 @@ export default function SearchHistory(props) {
   };
 
   const renderMenuItems = () => {
-    return <div>{props.history.map(renderItem)}</div>;
+    return <div>{history.map(renderItem)}</div>;
   };
 
   return (
@@ -43,8 +44,10 @@ export default function SearchHistory(props) {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {props.history ? renderMenuItems() : <div />}
+        {history ? renderMenuItems() : <div />}
       </Menu>
     </div>
   );
 }
+
+export default SearchHistory;
