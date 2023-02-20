@@ -1,7 +1,7 @@
 import React from "react";
 import Episode from "./Episode";
 
-function EpisodeList({ program_title, program_description, program_image, episodes }) {
+const EpisodeList = ({ program_title, program_description, program_image, episodes }) => {
   const cardStyle = {
     width: "20vw",
     float: "left",

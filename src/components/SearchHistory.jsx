@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Menu, MenuItem } from "@material-ui/core";
 import "../App.css";
 
-function SearchHistory({getFeed, history}) {
+const SearchHistory = ({ getFeed, history }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -10,8 +10,8 @@ function SearchHistory({getFeed, history}) {
   };
 
   const handleClose = (event) => {
-    if (event.currentTarget.innerText != '') 
-      getFeed({target: {elements: {feed_url: {value: event.currentTarget.innerText}}}});
+    if (event.currentTarget.innerText != '')
+      getFeed({ target: { elements: { feed_url: { value: event.currentTarget.innerText } } } });
     setAnchorEl(null);
   };
 
