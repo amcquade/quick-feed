@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ReactAudioPlayer from "react-audio-player";
 import { Collapse } from "@material-ui/core";
 
-const Episode = ({ link, title }) => {
+function Episode({ link, title }) {
   const [open, setOpen] = useState(false);
 
   const divStyles = {
