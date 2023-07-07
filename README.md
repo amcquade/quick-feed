@@ -4,6 +4,7 @@ This project is a simple ReactJS app for rendering RSS feeds for podcasts.
 You can try out the app [here](https://amcquade.github.io/quick-feed/).
 
 ![quick-feed demo](demo/demo.gif)
+![image](demo/demo-image.jpg)
 
 ###### This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). You can read more about it [here](learnMoreReact.md).
 
