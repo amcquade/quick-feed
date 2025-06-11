@@ -9,13 +9,13 @@
     "react": "^16.10.2",
     "react-audio-player": "^0.13.0",
     "react-dom": "^16.10.2",
-    "react-scripts": "^3.2.0",
+    "react-scripts": "^5.0.1",
     "rss-parser": "^3.7.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
@@ -30,6 +30,19 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "gh-pages": "^2.0.1"
+    "@craco/craco": "^7.1.0",
+    "assert": "^2.1.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.1",
+    "gh-pages": "^2.0.1",
+    "https-browserify": "^1.0.0",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
+    "process": "^0.11.10",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "timers-browserify": "^2.0.12",
+    "url": "^0.11.4",
+    "util": "^0.12.5"
   }
 }
