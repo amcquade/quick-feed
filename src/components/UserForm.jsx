@@ -24,6 +24,7 @@ const UserForm = ({ getFeed, previous_feeds, past }) => {
           type="text"
           name="feed_url"
           onChange={handleSearchChange}
+          aria-label="Enter your RSS Feed here..."
           style={{
             padding: "0.5rem 0",
           }}
