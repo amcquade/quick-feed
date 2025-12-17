@@ -6,9 +6,9 @@ const Episode = ({ link, title }) => {
   const [open, setOpen] = useState(false);
 
   const divStyles = {
-    width: "77vw",
+    width: "78vw",
     float: "right",
-    marginRight: "1vw",
+    marginRight: "2vw",
   };
 
   return (
@@ -25,7 +25,7 @@ const Episode = ({ link, title }) => {
           className="audioPlayer"
           src={link}
           controls
-          autoplay={false}
+          
         />
       </Collapse>
     </div>
