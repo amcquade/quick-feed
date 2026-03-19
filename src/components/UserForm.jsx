@@ -20,11 +20,11 @@ const UserForm = ({ getFeed, previous_feeds, past }) => {
     <div>
       <form onSubmit={getFeed}>
         <Input
-          placeholder="Enter your RSS Feed here..."
+          placeholder="Enter an RSS Feed URL or search by Name..."
           type="text"
           name="feed_url"
           onChange={handleSearchChange}
-          aria-label="Enter your RSS Feed here..."
+          aria-label="Enter an RSS Feed URL or search by Name..."
           style={{
             padding: "0.5rem 0",
           }}

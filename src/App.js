@@ -6,6 +6,11 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  List,
+  ListItem,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
 } from "@material-ui/core";
 
 import "./App.css";
@@ -19,12 +24,11 @@ const App = ({ fetching }) => {
   const [previousFeeds, setPreviousFeeds] = useState([]);
   const [past, setPast] = useState(false);
   const [error, setError] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchDialogOpen, setSearchDialogOpen] = useState(false);
 
-  const getFeed = (event) => {
-    setFetching((prev) => !prev);
-    if (event.preventDefault != null)
-      event.preventDefault();
-    const feed_url = event.target.elements.feed_url.value;
+  const fetchRSS = async (url) => {
+    setFetching(true);
     const Parser = require("rss-parser");
     const parser = new Parser({
       customFields: {
@@ -34,32 +38,67 @@ const App = ({ fetching }) => {
 
     const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
 
-    if (feed_url) {
-      const loadRSS = async () => {
-        try {
-          const feed = await parser.parseURL(CORS_PROXY + feed_url);
-          setFetched({
-            episodes: feed.items,
-            program_title: feed.title,
-            program_image: feed.image.url,
-            program_description: feed.description,
-          });
-          setFetching((prev) => !prev);
-          setPreviousFeeds([...new Set([...previousFeeds, feed_url])]);
-          setPast(true);
+    try {
+      const feed = await parser.parseURL(CORS_PROXY + url);
+      setFetched({
+        episodes: feed.items,
+        program_title: feed.title,
+        program_image: feed.image.url,
+        program_description: feed.description,
+      });
+      setFetching(false);
+      setPreviousFeeds((prev) => [...new Set([...prev, url])]);
+      setPast(true);
 
-          return setError(false);
-        } catch (error) {
+      return setError(false);
+    } catch (err) {
+      setFetching(false);
+      setError(true);
+
+      return err;
+    }
+  };
+
+  const getFeed = async (event) => {
+    if (event && event.preventDefault != null) {
+      event.preventDefault();
+    }
+    const target = event && event.target;
+    const elements = target && target.elements;
+    const feed_url_elem = elements && elements.feed_url;
+    let input_val = feed_url_elem && feed_url_elem.value;
+    input_val = input_val ? input_val.trim() : "";
+
+    if (!input_val) return;
+
+    const isUrl = input_val.startsWith("http://") || input_val.startsWith("https://") || input_val.includes(".xml") || input_val.includes(".rss");
+
+    if (isUrl) {
+      return fetchRSS(input_val);
+    } else {
+      setFetching(true);
+      try {
+        const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(input_val)}&entity=podcast`);
+        const data = await res.json();
+        
+        if (data.results && data.results.length > 0) {
+          const exactMatch = data.results.find(p => p.collectionName.toLowerCase() === input_val.toLowerCase());
+          if (exactMatch && exactMatch.feedUrl) {
+            setFetching(false);
+            return fetchRSS(exactMatch.feedUrl);
+          } else {
+            setSearchResults(data.results.filter(p => p.feedUrl));
+            setSearchDialogOpen(true);
+            setFetching(false);
+          }
+        } else {
           setFetching(false);
           setError(true);
-
-          return error;
         }
-      };
-
-      return loadRSS();
-    } else {
-      return;
+      } catch (err) {
+        setFetching(false);
+        setError(true);
+      }
     }
   };
 
@@ -90,6 +129,39 @@ const App = ({ fetching }) => {
     </div>
   );
 
+  const renderSearchDialog = () => (
+    <Dialog open={searchDialogOpen} onClose={() => setSearchDialogOpen(false)} maxWidth="sm" fullWidth>
+      <DialogTitle>Select a Podcast</DialogTitle>
+      <DialogContent>
+        <List>
+          {searchResults.map((result) => (
+            <ListItem 
+              button 
+              key={result.collectionId} 
+              onClick={() => {
+                setSearchDialogOpen(false);
+                fetchRSS(result.feedUrl);
+              }}
+            >
+              <ListItemAvatar>
+                <Avatar src={result.artworkUrl60} />
+              </ListItemAvatar>
+              <ListItemText 
+                primary={result.collectionName} 
+                secondary={result.artistName} 
+              />
+            </ListItem>
+          ))}
+        </List>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => setSearchDialogOpen(false)} color="primary">
+          Cancel
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+
   return (
     <div className="App">
       <header className="App-header">
@@ -102,6 +174,7 @@ const App = ({ fetching }) => {
         previous_feeds={[...previousFeeds]}
       />
       {error ? renderAlert() : <div />}
+      {searchDialogOpen ? renderSearchDialog() : null}
       {!past ? <p>Please enter an RSS feed</p> : <div></div>}
       <LoadingStatus fetching={onFetching} />
 
