@@ -9,6 +9,8 @@ You can try out the app [here](https://amcquade.github.io/quick-feed/).
 
 ## Usage
 
+> **Note:** feeds are fetched through the public `cors-anywhere.herokuapp.com` proxy, which now requires manual opt-in and rejects requests, so loading a feed currently fails with an "Error Parsing Feed" dialog until the proxy is replaced (see #43). The screenshots below were taken with a local pass-through proxy.
+
 1. Paste the URL of a podcast RSS feed into the input and press **Submit**.
 
    ![Empty form](docs/empty-form.jpg)
