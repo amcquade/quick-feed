@@ -7,6 +7,22 @@ You can try out the app [here](https://amcquade.github.io/quick-feed/).
 
 ###### This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). You can read more about it [here](learnMoreReact.md).
 
+## Usage
+
+1. Paste the URL of a podcast RSS feed into the input and press **Submit**.
+
+   ![Empty form](docs/empty-form.jpg)
+
+2. The podcast artwork, title, description and episode list are loaded.
+
+   ![Feed loaded with episodes](docs/feed-loaded.jpg)
+
+3. Click an episode title to expand it and play the audio with the built-in player.
+
+   ![Audio player for an episode](docs/audio-player.jpg)
+
+Feeds you have loaded are listed under **Previous Feeds** so you can reload them with one click.
+
 ## Available Scripts
 
 In the project directory, you can run:
